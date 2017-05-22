@@ -2,15 +2,15 @@ import cv2
 import numpy as np
 
 
-img = cv2.imread('./zdjecia/real.jpg')
+img = cv2.imread('./zaakceptowane/22.jpg')
 
 
 class CiscoRecognizer:
     def __init__(self, photo):
         self.hsv = cv2.cvtColor(photo, cv2.COLOR_BGR2HSV)
         self.photo = photo
-        self.min_blue = np.array([90, 150, 0])
-        self.max_blue = np.array([110, 255, 90])
+        self.min_blue = np.array([90, 50, 0])
+        self.max_blue = np.array([150, 255, 180])
 
         self.min_red = np.array([170, 40, 30])
         self.max_red = np.array([10, 255, 210])
@@ -115,6 +115,54 @@ class CiscoRecognizer:
 ciscoRecognizer = CiscoRecognizer(img)
 ciscoRecognizer.get_colors()
 ciscoRecognizer.show_photo()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
