@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 
-img = cv2.imread('./zaakceptowane/22.jpg')
+img = cv2.imread('./najnowsze/4.jpg')
 
 
 class CiscoRecognizer:
@@ -12,9 +12,10 @@ class CiscoRecognizer:
         self.min_blue = np.array([90, 50, 0])
         self.max_blue = np.array([150, 255, 180])
 
-        self.min_red = np.array([170, 40, 30])
-        self.max_red = np.array([10, 255, 210])
-        self.height, self.width , self.depth = self.photo.shape
+
+        self.min_red = np.array([160, 90, 90])
+        self.max_red = np.array([20, 255, 250])
+        self.height, self.width, self.depth = self.photo.shape
         self.red_colors = np.zeros((self.height, self.width, 3), np.uint8)
         self.blue_colors = np.zeros((self.height, self.width, 3), np.uint8)
 
@@ -69,6 +70,7 @@ class CiscoRecognizer:
                         self.blue_colors[x, y][0] = 255
                         self.blue_colors[x, y][1] = 255
                         self.blue_colors[x, y][2] = 255
+
                     elif (self.is_red(self.hsv[x, y])):
                         self.red_colors[x, y][0] = 255
                         self.red_colors[x, y][1] = 255
@@ -77,6 +79,7 @@ class CiscoRecognizer:
                         self.blue_colors[x, y][0] = 0
                         self.blue_colors[x, y][1] = 0
                         self.blue_colors[x, y][2] = 0
+
                     else:
                         self.red_colors[x, y][0] = 0
                         self.red_colors[x, y][1] = 0
@@ -101,8 +104,9 @@ class CiscoRecognizer:
                 #     img[x, y][2] = 132
 
     def show_photo(self):
-        cv2.imshow('image', self.red_colors)
-        # cv2.imshow('image', self.blue_colors)
+        # cv2.imshow('image', self.red_colors)
+        cv2.imwrite('najnowsze/red.jpg', self.red_colors)
+        cv2.imwrite('najnowsze/blue.jpg', self.blue_colors)
 
         k = cv2.waitKey(0)
         if k == 27:         # wait for ESC key to exit
