@@ -5,18 +5,20 @@ from invariant_counter import InvariantCounter
 from pprint import pprint
 
 MAX_LINE_SIZE = 1000
+MIN_LINE_SIZE = 10
 MAX_LETTER_SIZE = 1500
-MIN_LETTER_SIZE = 20
+MIN_LETTER_SIZE = 30
 DIFF = 0.90
 
-img = cv2.imread('./final/old/2.jpg')
+img = cv2.imread('./final/1.jpg')
 
 
 class CiscoRecognizer:
     def __init__(self, photo):
         self.hsv = cv2.cvtColor(photo, cv2.COLOR_BGR2HSV)
         self.photo = photo
-        self.min_blue = np.array([90, 50, 0])
+
+        self.min_blue = np.array([90, 60, 40])
         self.max_blue = np.array([150, 255, 180])
 
 
@@ -145,7 +147,7 @@ class CiscoRecognizer:
                     self.mark_and_add_segment(self.blue_colors, blue_segments, (x, y), [255, 255, 255])
 
         if sanitize:
-            self.delete_blue_segments(blue_segments)
+            blue_segments = self.delete_blue_segments(blue_segments)
 
 
         return red_segments, blue_segments
@@ -154,7 +156,6 @@ class CiscoRecognizer:
     def delete_red_segments(self, segment_list):
         filtered_list = []
         for segment in segment_list:
-
             if len(segment) > MAX_LETTER_SIZE or len(segment) < MIN_LETTER_SIZE:
                 for point in segment:
                     self.red_colors[point[0], point[1]] = [0, 0, 0]
@@ -164,35 +165,41 @@ class CiscoRecognizer:
         return filtered_list
 
     def delete_blue_segments(self, segment_list):
+        filtered_list = []
         for segment in segment_list:
-            if len(segment) > MAX_LINE_SIZE:
+            if len(segment) > MAX_LINE_SIZE or len(segment) < MIN_LINE_SIZE:
                 for point in segment:
                     self.blue_colors[point[0], point[1]] = [0, 0, 0]
+            else:
+                filtered_list.append(segment)
+
+        return filtered_list
 
 
-    def calculate_template_invariants(self):
-        template = cv2.imread('./template1.jpg')
-        template = CiscoRecognizer(template)
-        template.get_colors()
-        red_segments, blue_segments = template.extract_segments(False)
-        self.template_letter_segments = []
-        self.template_logo_segments = []
 
-        for red_segment in red_segments:
-            invariant_counter = InvariantCounter(red_segment)
-            invariant_counter.calculate_needed_invariants()
-            self.template_letter_segments.append(invariant_counter)
-
-        for blue_segment in blue_segments:
-            invariant_counter = InvariantCounter(blue_segment)
-            invariant_counter.calculate_needed_invariants()
-            self.template_logo_segments.append(invariant_counter)
-
-        print("test")
+    # def calculate_template_invariants(self):
+    #     template = cv2.imread('./template1.jpg')
+    #     template = CiscoRecognizer(template)
+    #     template.get_colors()
+    #     red_segments, blue_segments = template.extract_segments(False)
+    #     self.template_letter_segments = []
+    #     self.template_logo_segments = []
+    #
+    #     for red_segment in red_segments:
+    #         invariant_counter = InvariantCounter(red_segment)
+    #         invariant_counter.calculate_needed_invariants()
+    #         self.template_letter_segments.append(invariant_counter)
+    #
+    #     for blue_segment in blue_segments:
+    #         invariant_counter = InvariantCounter(blue_segment)
+    #         invariant_counter.calculate_needed_invariants()
+    #         self.template_logo_segments.append(invariant_counter)
+    #
+    #     print("test")
 
 
     def calculate_photo_segments_invariant(self):
-        red_segments, blue_segments = self.extract_segments(True)
+        red_segments, blue_segments = self.extract_segments()
 
         self.letter_segments = []
         self.logo_segments = []
@@ -205,87 +212,84 @@ class CiscoRecognizer:
         for blue_segment in blue_segments:
             invariant_counter = InvariantCounter(blue_segment)
             invariant_counter.calculate_needed_invariants()
-            self.logo_segments.append(invariant_counter)
+            print(invariant_counter.NM1, invariant_counter.NM2, invariant_counter.NM7)
+            if invariant_counter.NM1 != 0 and invariant_counter.NM2 != 0 and invariant_counter.NM7 !=0:
+                self.logo_segments.append(invariant_counter)
 
 
     def find_similar_segments(self):
-        letters = dict()
-        letters['c'] = []
-        letters['i'] = []
-        letters['s'] = []
-        letters['o'] = []
-
-        #find C
-        for segment in self.letter_segments:
-        #     # print(segment.NM1)
-        #     # print(segment.NM2)
-        #     # print(segment.NM3)
-        #     # print(segment.NM7)
-        #     # print("*"*60)
-            if 0.28 < segment.NM1 < 0.39:
-                if 0.014 < segment.NM2 < 0.03:
-                    if 0.005 < segment.NM3 < 0.013:
-                        if 0.018 < segment.NM7 < 0.03:
-                            print("found C")
-                            letters['c'].append(segment)
-                            for point in segment.segment:
-                                self.red_colors[point[0], point[1]] = [255, 2555, 255]
-
-
-        #find I
-        for segment in self.letter_segments:
-            if 0.29 < segment.NM1 < 0.4:
-                if 0.065 < segment.NM2 < 0.13:
-                    if 0.006 < segment.NM7 < 0.0073:
-                        print("found I")
-                        letters['i'].append(segment)
-                        for point in segment.segment:
-                            self.red_colors[point[0], point[1]] = [255, 2555, 255]
-
-        #find S
-        for segment in self.letter_segments:
-            if 0.24 < segment.NM1 < 0.34:
-                if 0.017 < segment.NM2 < 0.034:
-                    if 0.00010 < segment.NM3 < 0.00183:
-                        if 0.011 < segment.NM7 < 0.021:
-                            print("found S")
-                            letters['s'].append(segment)
-                            for point in segment.segment:
-                                self.red_colors[point[0], point[1]] = [255, 2555, 255]
-
-        # # find 0
-        for segment in self.letter_segments:
-            if 0.24 < segment.NM1 < 0.33:
-                if 3.78e-06 < segment.NM2 < 0.0002:
-                    if 4.4e-08 < segment.NM3 < 6e-05:
-                        if 0.014 < segment.NM7 < 0.027:
-                            letters['o'].append(segment)
-                            print("found O")
-                            for point in segment.segment:
-                                self.red_colors[point[0], point[1]] = [255, 2555, 255]
-
-
+        # letters = dict()
+        # letters['c'] = []
+        # letters['i'] = []
+        # letters['s'] = []
+        # letters['o'] = []
+        # #
+        # #find C
         # for segment in self.letter_segments:
-        #     for template_segment in self.template_letter_segments:
-        #         if template_segment.NM1 - template_segment.NM1 * DIFF < segment.NM1 < template_segment.NM1 +template_segment.NM1 * DIFF:
-        #             if template_segment.NM2 - template_segment.NM2 * DIFF < segment.NM2 < template_segment.NM2 + template_segment.NM2 * DIFF:
-        #                 if template_segment.NM3 - template_segment.NM3 * DIFF < segment.NM3 < template_segment.NM3 + template_segment.NM3 * DIFF:
-        #                     if template_segment.NM7 - template_segment.NM7 * DIFF < segment.NM7 < template_segment.NM7 + template_segment.NM7 * DIFF:
-        #                         print("znaleziono podobny")
-        #                         for point in segment.segment:
-        #                             self.red_colors[point[0], point[1]] = [255, 2555, 255]
-        #                         break
+        #     if 0.28 < segment.NM1 < 0.39:
+        #         if 0.014 < segment.NM2 < 0.03:
+        #             if 0.005 < segment.NM3 < 0.013:
+        #                 if 0.018 < segment.NM7 < 0.03:
+        #                     # print(segment.NM1)
+        #                     # print(segment.NM2)
+        #                     # print(segment.NM3)
+        #                     # print(segment.NM7)
+        #                     print("found C")
+        #                     letters['c'].append(segment)
+        #                     for point in segment.segment:
+        #                         self.red_colors[point[0], point[1]] = [255, 2555, 255]
         #
-        # for segment in self.logo_segments:
-        #     for template_segment in self.template_logo_segments:
-        #         if template_segment.NM1 - template_segment.NM1 * DIFF < segment.NM1 < template_segment.NM1 +template_segment.NM1 * DIFF:
-        #             if template_segment.NM2 - template_segment.NM2 * DIFF < segment.NM2 < template_segment.NM2 + template_segment.NM2 * DIFF:
-        #                 if template_segment.NM3 - template_segment.NM3 * DIFF < segment.NM3 < template_segment.NM3 + template_segment.NM3 * DIFF:
-        #                     if template_segment.NM7 - template_segment.NM7 * DIFF < segment.NM7 < template_segment.NM7 + template_segment.NM7 * DIFF:
-        #                         print("znaleziono podobny")
-        #                         for point in segment.segment:
-        #                             self.blue_colors[point[0], point[1]] = [255, 2555, 255]
-        #                         break
+        #
+        # #find I
+        # for segment in self.letter_segments:
+        #     if 0.29 < segment.NM1 < 0.4:
+        #         if 0.065 < segment.NM2 < 0.13:
+        #             if 0.006 < segment.NM7 < 0.0073:
+        #                 print("found I")
+        #                 letters['i'].append(segment)
+        #                 for point in segment.segment:
+        #                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
+        #
+        # #find S
+        # for segment in self.letter_segments:
+        #     if 0.24 < segment.NM1 < 0.34:
+        #         if 0.017 < segment.NM2 < 0.034:
+        #             if 0.00010 < segment.NM3 < 0.00183:
+        #                 if 0.011 < segment.NM7 < 0.021:
+        #                     print("found S")
+        #                     letters['s'].append(segment)
+        #                     for point in segment.segment:
+        #                         self.red_colors[point[0], point[1]] = [255, 2555, 255]
+        #
+        # # # find 0
+        # for segment in self.letter_segments:
+        #     if 0.24 < segment.NM1 < 0.33:
+        #         if 3.78e-06 < segment.NM2 < 0.0003:
+        #             if 4.4e-08 < segment.NM3 < 6e-05:
+        #                 if 0.014 < segment.NM7 < 0.027:
+        #                     letters['o'].append(segment)
+        #                     print("found O")
+        #                     for point in segment.segment:
+        #                         self.red_colors[point[0], point[1]] = [255, 2555, 255]
+
+
+
+        print(self.logo_segments)
+        for segment in self.logo_segments:
+            print(segment.NM1)
+            print(segment.NM2)
+            print(segment.NM3)
+            print(segment.NM7)
+            print("*" * 60)
+            # if 0.28 < segment.NM1 < 0.39:
+            #     if 0.014 < segment.NM2 < 0.03:
+            #         if 0.005 < segment.NM3 < 0.013:
+            #             if 0.018 < segment.NM7 < 0.03:
+            #                 print("found C")
+            #                 letters['c'].append(segment)
+            #                 for point in segment.segment:
+            #                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
+
 
     def show_photo(self):
         # cv2.imshow('image', self.red_colors)
