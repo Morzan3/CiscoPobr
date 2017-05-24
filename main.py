@@ -10,7 +10,7 @@ MAX_LETTER_SIZE = 1500
 MIN_LETTER_SIZE = 30
 DIFF = 0.90
 
-img = cv2.imread('./final/1.jpg')
+img = cv2.imread('./final/2.jpg')
 
 
 class CiscoRecognizer:
@@ -130,7 +130,7 @@ class CiscoRecognizer:
         return 1
 
 
-    def extract_segments(self, sanitize = True):
+    def extract_segments(self, sanitize = False):
         red_segments = []
         for x in range(self.height):
             for y in range(self.width):
@@ -310,10 +310,6 @@ ciscoRecognizer.get_colors()
 ciscoRecognizer.calculate_photo_segments_invariant()
 ciscoRecognizer.find_similar_segments()
 ciscoRecognizer.show_photo()
-# ciscoRecognizer.get_colors()
-# ciscoRecognizer.extract_segments()
-# ciscoRecognizer.show_photo()
-
 
 
 
