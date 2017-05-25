@@ -5,12 +5,12 @@ from invariant_counter import InvariantCounter
 from pprint import pprint
 
 MAX_LINE_SIZE = 10000
-MIN_LINE_SIZE = 60
+MIN_LINE_SIZE = 190
 MAX_LETTER_SIZE = 10000
-MIN_LETTER_SIZE = 30
+MIN_LETTER_SIZE = 130
 DIFF = 0.90
 
-img = cv2.imread('./final/medium/3.jpg')
+img = cv2.imread('./medium/2.jpg')
 
 
 class CiscoRecognizer:
@@ -173,7 +173,7 @@ class CiscoRecognizer:
         return filtered_list
 
     def calculate_photo_segments_invariant(self):
-        red_segments, blue_segments = self.extract_segments(True)
+        red_segments, blue_segments = self.extract_segments(True) # *****************************
 
         self.letter_segments = []
         self.logo_segments = []
@@ -197,50 +197,42 @@ class CiscoRecognizer:
         letters['s'] = []
         letters['o'] = []
 
-        #find C
+        logo_segments = []
+
         for segment in self.letter_segments:
+
+            # find C
             if 0.28 < segment.NM1 < 0.39 and 0.014 < segment.NM2 < 0.03 and 0.005 < segment.NM3 < 0.013 and 0.018 < segment.NM7 < 0.03:
                             print("found C")
                             letters['c'].append(segment)
                             for point in segment.segment:
                                 self.red_colors[point[0], point[1]] = [255, 2555, 255]
-            # else:
-            #     for point in segment.segment:
-            #         self.red_colors[point[0], point[1]] = [0, 0, 0]
 
-
-        #find I
-        for segment in self.letter_segments:
-            if 0.29 < segment.NM1 < 0.4 and 0.065 < segment.NM2 < 0.13 and 0.006 < segment.NM7 < 0.0073:
+            # find I
+            elif 0.29 < segment.NM1 < 0.4 and 0.065 < segment.NM2 < 0.13 and 0.006 < segment.NM7 < 0.0073:
                         print("found I")
                         letters['i'].append(segment)
                         for point in segment.segment:
                             self.red_colors[point[0], point[1]] = [255, 2555, 255]
-            # else:
-            #     for point in segment.segment:
-            #         self.red_colors[point[0], point[1]] = [0, 0, 0]
 
-        #find S
-        for segment in self.letter_segments:
-            if 0.24 < segment.NM1 < 0.34 and 0.017 < segment.NM2 < 0.034 and 0.00002 < segment.NM3 < 0.00183 and 0.011 < segment.NM7 < 0.021:
-                            print("found S")
-                            letters['s'].append(segment)
-                            for point in segment.segment:
-                                self.red_colors[point[0], point[1]] = [255, 2555, 255]
-            # else:
-            #     for point in segment.segment:
-            #         self.red_colors[point[0], point[1]] = [0, 0, 0]
+            # find S
+            elif 0.24 < segment.NM1 < 0.34 and 0.017 < segment.NM2 < 0.034 and 0.00002 < segment.NM3 < 0.00183 and 0.011 < segment.NM7 < 0.021:
+                print("found S")
+                letters['s'].append(segment)
+                for point in segment.segment:
+                    self.red_colors[point[0], point[1]] = [255, 2555, 255]
 
-        # # find 0
-        for segment in self.letter_segments:
-            if 0.24 < segment.NM1 < 0.33 and 3.78e-06 < segment.NM2 < 0.0003 and 4.4e-08 < segment.NM3 < 6e-05 and 0.014 < segment.NM7 < 0.027:
-                            letters['o'].append(segment)
-                            print("found O")
-                            for point in segment.segment:
-                                self.red_colors[point[0], point[1]] = [255, 2555, 255]
-            # else:
-            #     for point in segment.segment:
-            #         self.red_colors[point[0], point[1]] = [0, 0, 0]
+
+            # # find 0
+            elif 0.24 < segment.NM1 < 0.33 and 3.78e-06 < segment.NM2 < 0.0003 and 4.4e-08 < segment.NM3 < 6e-05 and 0.014 < segment.NM7 < 0.027:
+                letters['o'].append(segment)
+                print("found O")
+                for point in segment.segment:
+                    self.red_colors[point[0], point[1]] = [255, 2555, 255]
+
+            else:
+                for point in segment.segment:
+                    self.red_colors[point[0], point[1]] = [0, 0, 0]
 
 
         for segment in self.logo_segments:
@@ -249,33 +241,24 @@ class CiscoRecognizer:
                             print("Small segments")
                             for point in segment.segment:
                                 self.blue_colors[point[0], point[1]] = [255, 2555, 255]
-            # else:
-            #     for point in segment.segment:
-            #         self.blue_colors[point[0], point[1]] = [0, 0, 0]
 
 
-        for segment in self.logo_segments:
             #Medium segments
-            if 0.27 < segment.NM1 < 0.46 and 0.04 < segment.NM2 < 0.19 and 0 <= segment.NM3 < 0.008 and 0.006 < segment.NM7 < 0.01:
+            elif 0.27 < segment.NM1 < 0.46 and 0.04 < segment.NM2 < 0.19 and 0 <= segment.NM3 < 0.008 and 0.006 < segment.NM7 < 0.01:
                             print("Medium")
                             for point in segment.segment:
                                 self.blue_colors[point[0], point[1]] = [255, 2555, 255]
-            # else:
-            #     for point in segment.segment:
-            #         self.blue_colors[point[0], point[1]] = [0, 0, 0]
 
 
-        for segment in self.logo_segments:
-            #Medium segments
-            if 0.5 < segment.NM1 < 1.28 and 0.24 < segment.NM2 < 1.6 and 1.6e-05 <= segment.NM3 < 0.0098 and 0.0063 < segment.NM7 < 0.0099:
+            #Large segments
+            elif 0.5 < segment.NM1 < 1.28 and 0.24 < segment.NM2 < 1.6 and 1.6e-07 <= segment.NM3 < 0.0098 and 0.0063 < segment.NM7 < 0.0099:
                             print("Long")
                             for point in segment.segment:
                                 self.blue_colors[point[0], point[1]] = [255, 2555, 255]
-            # else:
-            #     for point in segment.segment:
-            #         self.blue_colors[point[0], point[1]] = [0, 0, 0]
 
-
+            else:
+                for point in segment.segment:
+                    self.blue_colors[point[0], point[1]] = [0, 0, 0]
 
     def show_photo(self):
         # cv2.imshow('image', self.red_colors)
