@@ -6,13 +6,13 @@ from pprint import pprint
 import math
 
 
-MAX_LINE_SIZE = 10000
+MAX_LINE_SIZE = 10000000000
 MIN_LINE_SIZE = 190
-MAX_LETTER_SIZE = 10000
+MAX_LETTER_SIZE = 100000000
 MIN_LETTER_SIZE = 200
 CHECK_LETTER_TRESHOLD = 50
 
-img = cv2.imread('./final/medium/4.jpg')
+img = cv2.imread('./final/medium/1.jpg')
 
 
 class CiscoRecognizer:
@@ -28,6 +28,13 @@ class CiscoRecognizer:
         self.height, self.width, self.depth = self.photo.shape
         self.red_colors = np.zeros((self.height, self.width, 3), np.uint8)
         self.blue_colors = np.zeros((self.height, self.width, 3), np.uint8)
+
+    def find_logo(self):
+        self.separate_colors()
+        self.calculate_photo_segments_invariant()
+        letter_segments, logo_segments = self.find_all_letter_and_logo_segments()
+        self.group_up_segments(letter_segments, logo_segments)
+        self.show_photo()
 
     '''
         Wstępne przetworzenie i progowanie
@@ -66,13 +73,6 @@ class CiscoRecognizer:
 
                 except IndexError:
                     continue
-
-    def find_logo(self):
-        self.separate_colors()
-        self.calculate_photo_segments_invariant()
-        letter_segments, logo_segments = self.find_similar_segments()
-        self.group_up_segments(letter_segments, logo_segments)
-        self.show_photo()
 
 
     def group_up_segments(self, letter_segments, logo_segments):
@@ -380,7 +380,7 @@ class CiscoRecognizer:
         return filtered_list
 
     def calculate_photo_segments_invariant(self):
-        red_segments, blue_segments = self.extract_segments(True)
+        red_segments, blue_segments = self.extract_segments()
 
         self.letter_segments = []
         self.logo_segments = []
@@ -398,13 +398,16 @@ class CiscoRecognizer:
                 self.logo_segments.append(invariant_counter)
 
 
-    def find_similar_segments(self):
+    def find_all_letter_and_logo_segments(self):
         letters = []
-
         logo_segments = []
 
         for segment in self.letter_segments:
-
+            print(segment.NM1)
+            print(segment.NM2)
+            print(segment.NM3)
+            print(segment.NM7)
+            ("*"*80)
             # find C
             if 0.28 < segment.NM1 < 0.39 and 0.014 < segment.NM2 < 0.03 and 0.005 < segment.NM3 < 0.013 and 0.018 < segment.NM7 < 0.03:
                 print("found C")
@@ -439,6 +442,10 @@ class CiscoRecognizer:
 
 
         for segment in self.logo_segments:
+            print(segment.NM1)
+            print(segment.NM2)
+            print(segment.NM3)
+            print(segment.NM7)
             # Smallest segments
             if 0.17 < segment.NM1 < 0.243 and 0.007 < segment.NM2 < 0.031 and 0 <= segment.NM3 < 0.0098 and 0.0064 < segment.NM7 < 0.009:
                             print("Small segments")
