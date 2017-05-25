@@ -23,18 +23,18 @@ class InvariantCounter:
         m11 = self.calculate_m(1, 1)
         m12 = self.calculate_m(1, 2)
 
-        center_i = m10 / segment_area;
-        center_j = m01 / segment_area;
+        self.center_i = m10 / segment_area;
+        self.center_j = m01 / segment_area;
 
         M01 = m01 - (m01 / segment_area) * segment_area;
         M10 = m10 - (m10 / segment_area) * segment_area;
         M11 = m11 - m10 * m01 / segment_area;
         M20 = m20 - m10 * m10 / segment_area;
         M02 = m02 - m01 * m01 / segment_area;
-        M21 = m21 - 2 * m11 * center_i - m20 * center_j + 2 * m01 * center_i * center_i;
-        M12 = m12 - 2 * m11 * center_j - m02 * center_i + 2 * m10 * center_j * center_j;
-        M30 = m30 - 3 * m20 * center_i + 2 * m10 * center_i * center_i;
-        M03 = m03 - 3 * m02 * center_j + 2 * m01 * center_j * center_j;
+        M21 = m21 - 2 * m11 * self.center_i - m20 * self.center_j + 2 * m01 * self.center_i * self.center_i;
+        M12 = m12 - 2 * m11 * self.center_j - m02 * self.center_i + 2 * m10 * self.center_j * self.center_j;
+        M30 = m30 - 3 * m20 * self.center_i + 2 * m10 * self.center_i * self.center_i;
+        M03 = m03 - 3 * m02 * self.center_j + 2 * m01 * self.center_j * self.center_j;
 
         self.NM1 = (M20 + M02) / pow(segment_area, 2);
         self.NM2 = ((M20 - M02) * (M20 - M02) + 4 * M11 * M11) / pow(segment_area, 4);
