@@ -6,14 +6,13 @@ from pprint import pprint
 import math
 
 
-#y się zmieniają gdy logo jest poziome
-
 MAX_LINE_SIZE = 10000
 MIN_LINE_SIZE = 190
 MAX_LETTER_SIZE = 10000
 MIN_LETTER_SIZE = 200
+CHECK_LETTER_TRESHOLD = 50
 
-img = cv2.imread('./final/medium/3.jpg')
+img = cv2.imread('./final/medium/4.jpg')
 
 
 class CiscoRecognizer:
@@ -30,37 +29,34 @@ class CiscoRecognizer:
         self.red_colors = np.zeros((self.height, self.width, 3), np.uint8)
         self.blue_colors = np.zeros((self.height, self.width, 3), np.uint8)
 
-
-    #Wstępne przetworzenie i progowanie
-
+    '''
+        Wstępne przetworzenie i progowanie
+    '''
     def is_red(self, point):
-        if ((point[0] <= self.max_red[0]) or (point[0] >= self.min_red[0])) and  (self.min_red[1] < point[1] <= self.max_red[1]) and (self.min_red[2] < point[2] <= self.max_red[2]):
-            return True
-        else:
-            return False
+        return True if ((point[0] <= self.max_red[0]) or (point[0] >= self.min_red[0])) \
+                    and (self.min_red[1] < point[1] <= self.max_red[1]) \
+                    and (self.min_red[2] < point[2] <= self.max_red[2]) \
+                else False
 
     def is_blue(self, point):
-        if (self.min_blue[0] < point[0] <= self.max_blue[0]) and  (self.min_blue[1] < point[1] <= self.max_blue[1]) and (self.min_blue[2] < point[2] <= self.max_blue[2]):
-            return True
-        return False
+        return True if (self.min_blue[0] < point[0] <= self.max_blue[0]) \
+                    and (self.min_blue[1] < point[1] <= self.max_blue[1]) \
+                    and (self.min_blue[2] < point[2] <= self.max_blue[2]) \
+            else False
 
 
     def is_pixel_of_given_color(self, pixel, color):
-        if pixel[0] == color[2] and pixel[1] == color[1] and pixel[2] == color[0]:
-            return True
-        else:
-            return False
+        return True if pixel[0] == color[2] and pixel[1] == color[1] and pixel[2] == color[0] else False
 
-    def get_colors(self):
+    def separate_colors(self):
         for x in range(self.height):
             for y in range(self.width):
                 try:
-                    if(self.is_blue(self.hsv[x,y])):
-
+                    if self.is_blue(self.hsv[x, y]):
                         self.red_colors[x, y] = [0, 0, 0]
                         self.blue_colors[x, y] = [255, 255, 255]
 
-                    elif (self.is_red(self.hsv[x, y])):
+                    elif self.is_red(self.hsv[x, y]):
                         self.red_colors[x, y] = [255, 255, 255]
                         self.blue_colors[x, y] = [0, 0, 0]
 
@@ -69,10 +65,10 @@ class CiscoRecognizer:
                         self.blue_colors[x, y] = [0, 0, 0]
 
                 except IndexError:
-                    print(x,y)
                     continue
+
     def find_logo(self):
-        self.get_colors()
+        self.separate_colors()
         self.calculate_photo_segments_invariant()
         letter_segments, logo_segments = self.find_similar_segments()
         self.group_up_segments(letter_segments, logo_segments)
@@ -80,8 +76,8 @@ class CiscoRecognizer:
 
 
     def group_up_segments(self, letter_segments, logo_segments):
-        s_segments = [(x,y) for x,y in letter_segments if x == 's']
-        rest = [(x,y) for x,y in letter_segments if x != 's']
+        s_segments = [(x, y) for x, y in letter_segments if x == 's']
+        rest = [(x, y) for x, y in letter_segments if x != 's']
 
         grouped_letter_segments = []
         for segment in s_segments:
@@ -90,7 +86,6 @@ class CiscoRecognizer:
             if grouped_letter_segment == None:
                 continue
             grouped_letter_segments.append(grouped_letter_segment)
-            rest = [x for x in rest if x not in grouped_letter_segments]
 
         self.assign_logo_to_grouped_letters(grouped_letter_segments, logo_segments)
 
@@ -101,7 +96,6 @@ class CiscoRecognizer:
 
     def assign_logo_segments_to_letter_group(self,letter_group, logo_segments):
         x_min, x_max, y_min, y_max = self.get_segment_center_boarder_points(letter_group)
-
         if (y_max - y_min) > (x_max - x_min):
             self.look_for_logo_up_or_down(letter_group, logo_segments)
         else:
@@ -239,7 +233,7 @@ class CiscoRecognizer:
                 elif point[1] < y_min:
                     y_min = point[1]
 
-        return x_min-5, x_max+5, y_min-5, y_max+5
+        return x_min, x_max, y_min, y_max
 
     def get_segment_center_boarder_points(self, group):
         xes = [segment[1].center_i for segment in group]
@@ -254,10 +248,9 @@ class CiscoRecognizer:
 
 
     def add_nearest_segments(self, s_segment, rest_segments):
-        grouped_segments = [s_segment]
-        i_segments = [(x,y) for x,y in rest_segments if x == 'i']
-        c_segments = [(x,y) for x,y in rest_segments if x == 'c']
-        o_segments = [(x,y) for x,y in rest_segments if x == 'o']
+        i_segments = [(x, y) for x, y in rest_segments if x == 'i']
+        c_segments = [(x, y) for x, y in rest_segments if x == 'c']
+        o_segments = [(x, y) for x, y in rest_segments if x == 'o']
 
         if len(i_segments) == 0 or len(c_segments) == 0 or len(o_segments) == 0:
             print("Not enought segments to qualifie for a logo")
@@ -269,8 +262,21 @@ class CiscoRecognizer:
         c_segments.remove(c_segment_first)
         c_segment_second = self.find_nearest_segment(s_segment, c_segments)
 
-        grouped_segments = grouped_segments + [i_segment, o_segment, c_segment_first, c_segment_second]
-        return grouped_segments
+        if self.check_letter_segments([s_segment, i_segment, o_segment, c_segment_first, c_segment_second]):
+            return [s_segment, i_segment, o_segment, c_segment_first, c_segment_second]
+        else:
+            return None
+
+    def check_letter_segments(self, letters_to_check):
+        xes = [y.center_i for x, y in letters_to_check]
+        yes = [y.center_j for x, y in letters_to_check]
+
+        x_diff = max(xes) - min(xes)
+        y_diff = max(yes) - min(yes)
+
+        smaller_diff = min(x_diff, y_diff)
+        print(smaller_diff)
+        return True if smaller_diff < CHECK_LETTER_TRESHOLD else False
 
     def find_nearest_segment(self, main_segment, rest):
         nearest_segment = rest[0]
@@ -282,9 +288,8 @@ class CiscoRecognizer:
         return nearest_segment
 
     def calculate_distance(self, first_point, second_point):
-        distance = math.sqrt(np.power([first_point[1].center_i - second_point[1].center_i,
-                                       first_point[1].center_j - second_point[1].center_j], 2).sum())
-        return distance
+        return math.sqrt(np.power([first_point[1].center_i - second_point[1].center_i,
+                                   first_point[1].center_j - second_point[1].center_j], 2).sum())
 
     def mark_and_add_segment(self, photo, segment_list, starting_point, segment_color):
         target_color = [randint(0,255), randint(0,255), randint(0,255)]
@@ -305,7 +310,6 @@ class CiscoRecognizer:
             (x_value, y_value) = coordinates
 
             try:
-
                 if self.is_pixel_of_given_color(photo[x_value + 1, y_value], segment_color):
                     photo[x_value + 1, y_value] = target_color
                     coordinates_set.add((x_value + 1, y_value))
@@ -328,7 +332,6 @@ class CiscoRecognizer:
 
             except IndexError:
                 continue
-
 
         segment_list.append(list(coordinates_set))
         return 1
@@ -377,7 +380,7 @@ class CiscoRecognizer:
         return filtered_list
 
     def calculate_photo_segments_invariant(self):
-        red_segments, blue_segments = self.extract_segments(True) # *****************************
+        red_segments, blue_segments = self.extract_segments(True)
 
         self.letter_segments = []
         self.logo_segments = []
@@ -385,7 +388,8 @@ class CiscoRecognizer:
         for red_segment in red_segments:
             invariant_counter = InvariantCounter(red_segment)
             invariant_counter.calculate_needed_invariants()
-            self.letter_segments.append(invariant_counter)
+            if invariant_counter.NM1 != 0 and invariant_counter.NM2 != 0 and invariant_counter.NM7 !=0:
+                self.letter_segments.append(invariant_counter)
 
         for blue_segment in blue_segments:
             invariant_counter = InvariantCounter(blue_segment)
@@ -462,15 +466,7 @@ class CiscoRecognizer:
                 for point in segment.segment:
                     self.blue_colors[point[0], point[1]] = [0, 0, 0]
 
-
-
         return letters, logo_segments
-
-
-
-
-
-
 
     def show_photo(self):
         # cv2.imshow('image', self.red_colors)
