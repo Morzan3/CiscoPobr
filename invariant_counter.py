@@ -26,8 +26,6 @@ class InvariantCounter:
         self.center_i = m10 / segment_area;
         self.center_j = m01 / segment_area;
 
-        M01 = m01 - (m01 / segment_area) * segment_area;
-        M10 = m10 - (m10 / segment_area) * segment_area;
         M11 = m11 - m10 * m01 / segment_area;
         M20 = m20 - m10 * m10 / segment_area;
         M02 = m02 - m01 * m01 / segment_area;

@@ -2,17 +2,16 @@ import cv2
 import numpy as np
 from random import randint
 from invariant_counter import InvariantCounter
-from pprint import pprint
 import math
 
 
-MAX_LINE_SIZE = 10000000000
+MAX_LINE_SIZE = 100000000
 MIN_LINE_SIZE = 190
 MAX_LETTER_SIZE = 100000000
 MIN_LETTER_SIZE = 200
 CHECK_LETTER_TRESHOLD = 50
 
-img = cv2.imread('./final/medium/1.jpg')
+img = cv2.imread('./final/big/2.jpg')
 
 
 class CiscoRecognizer:
@@ -74,6 +73,9 @@ class CiscoRecognizer:
                 except IndexError:
                     continue
 
+    '''
+    Grupowanie segmentów liter
+    '''
 
     def group_up_segments(self, letter_segments, logo_segments):
         s_segments = [(x, y) for x, y in letter_segments if x == 's']
@@ -82,12 +84,15 @@ class CiscoRecognizer:
         grouped_letter_segments = []
         for segment in s_segments:
             grouped_letter_segment = self.add_nearest_segments(segment, rest)
-
             if grouped_letter_segment == None:
                 continue
             grouped_letter_segments.append(grouped_letter_segment)
 
         self.assign_logo_to_grouped_letters(grouped_letter_segments, logo_segments)
+
+    '''
+    Grupowanie segmentów logo do zgrupowanych segmentów liter
+    '''
 
     def assign_logo_to_grouped_letters(self, group_letters, logo_segments):
         for letter_group in group_letters:
@@ -112,43 +117,9 @@ class CiscoRecognizer:
                 o_letter = letter
 
         if s_letter[1].center_j < o_letter[1].center_j:
-            self.look_up_for_logo(letter_group, logo_segments)
+            self.look_for_logo_in_direction(letter_group, logo_segments, 'u')
         else:
-            self.look_down_for_logo(letter_group, logo_segments)
-
-    def look_up_for_logo(self, letter_group, logo_segments):
-        s_letter = [(x,y)for x,y in letter_group if x == 's'][0]
-        up_segments = [(x,y) for x,y in logo_segments if y.center_i < s_letter[1].center_i]
-
-        if len(up_segments) < 10:
-            print("Group marked as noise")
-
-        closest_segments = []
-        for segment in up_segments:
-            distance = self.calculate_distance(s_letter, segment)
-            closest_segments.append((distance, segment))
-
-        sorted_by_distance = sorted(closest_segments, key=lambda x: x[0])
-        sorted_by_distance = [y for x,y in sorted_by_distance]
-        letter_group = letter_group + sorted_by_distance[:9]
-        self.mark_grouped_segments([letter_group])
-
-    def look_down_for_logo(self, letter_group, logo_segments):
-        s_letter = [(x, y) for x, y in letter_group if x == 's'][0]
-        down_segments = [(x, y) for x, y in logo_segments if y.center_i > s_letter[1].center_i]
-
-        if len(down_segments) < 10:
-            print("Group marked as noise")
-
-        closest_segments = []
-        for segment in down_segments:
-            distance = self.calculate_distance(s_letter, segment)
-            closest_segments.append((distance, segment))
-
-        sorted_by_distance = sorted(closest_segments, key=lambda x: x[0])
-        sorted_by_distance = [y for x, y in sorted_by_distance]
-        letter_group = letter_group + sorted_by_distance[:9]
-        self.mark_grouped_segments([letter_group])
+            self.look_for_logo_in_direction(letter_group, logo_segments, 'd')
 
     def look_for_logo_left_or_right(self, letter_group, logo_segments):
         s_letter = None
@@ -164,57 +135,51 @@ class CiscoRecognizer:
             return
 
         if s_letter[1].center_i > o_letter[1].center_i:
-            self.look_left_for_logo(letter_group, logo_segments)
+            self.look_for_logo_in_direction(letter_group, logo_segments, 'l')
         else:
-            self.look_right_for_logo(letter_group, logo_segments)
+            self.look_for_logo_in_direction(letter_group, logo_segments, 'r')
 
 
-    def look_left_for_logo(self, letter_group, logo_segments):
-        s_letter = [(x, y) for x, y in letter_group if x == 's'][0]
-        left_segments = [(x, y) for x, y in logo_segments if y.center_j < s_letter[1].center_j]
+    def look_for_logo_in_direction(self, letter_group, logo_segments, direction):
+        s_letter = [(x,y)for x,y in letter_group if x == 's'][0]
+        direction_segments = []
+        if direction == 'u':
+            direction_segments = [(x,y) for x,y in logo_segments if y.center_i < s_letter[1].center_i]
+        elif direction == 'd':
+            direction_segments = [(x, y) for x, y in logo_segments if y.center_i > s_letter[1].center_i]
+        elif direction == 'l':
+            direction_segments = [(x, y) for x, y in logo_segments if y.center_j < s_letter[1].center_j]
+        elif direction == 'r':
+            direction_segments = [(x, y) for x, y in logo_segments if y.center_j > s_letter[1].center_j]
 
-        if len(left_segments) < 10:
-            print("Group marked as noise")
+        if len(direction_segments) < 9:
+            print("Logo segments identified as noise")
+            self.mark_grouped_segments(letter_group)
+            return
 
         closest_segments = []
-        for segment in left_segments:
+        for segment in direction_segments:
             distance = self.calculate_distance(s_letter, segment)
             closest_segments.append((distance, segment))
 
         sorted_by_distance = sorted(closest_segments, key=lambda x: x[0])
-        sorted_by_distance = [y for x, y in sorted_by_distance]
+        sorted_by_distance = [y for x,y in sorted_by_distance]
         letter_group = letter_group + sorted_by_distance[:9]
-        self.mark_grouped_segments([letter_group])
+        self.mark_grouped_segments(letter_group)
 
-    def look_right_for_logo(self, letter_group, logo_segments):
-        s_letter = [(x, y) for x, y in letter_group if x == 's'][0]
-        right_segments = [(x, y) for x, y in logo_segments if y.center_j > s_letter[1].center_j]
 
-        if len(right_segments) < 10:
-            print("Group marked as noise")
-
-        closest_segments = []
-        for segment in right_segments:
-            distance = self.calculate_distance(s_letter, segment)
-            closest_segments.append((distance, segment))
-
-        sorted_by_distance = sorted(closest_segments, key=lambda x: x[0])
-        sorted_by_distance = [y for x, y in sorted_by_distance]
-        letter_group = letter_group + sorted_by_distance[:9]
-        self.mark_grouped_segments([letter_group])
 
     def mark_grouped_segments(self, grouped_letter_segments):
-        for group in grouped_letter_segments:
-            x_min, x_max, y_min, y_max = self.get_segment_boarder_points(group)
+        x_min, x_max, y_min, y_max = self.get_segment_boarder_points(grouped_letter_segments)
 
-            for x in range(x_min, x_max):
-                self.photo[x][y_min] = [0, 0, 255]
-            for x in range(x_min, x_max):
-                self.photo[x][y_max] = [0, 0, 255]
-            for y in range(y_min, y_max):
-                self.photo[x_min][y] = [0, 0, 255]
-            for y in range(y_min, y_max):
-                self.photo[x_max][y] = [0, 0, 255]
+        for x in range(x_min, x_max):
+            self.photo[x][y_min] = [0, 0, 255]
+        for x in range(x_min, x_max):
+            self.photo[x][y_max] = [0, 0, 255]
+        for y in range(y_min, y_max):
+            self.photo[x_min][y] = [0, 0, 255]
+        for y in range(y_min, y_max):
+            self.photo[x_max][y] = [0, 0, 255]
 
     def get_segment_boarder_points(self, group):
         x_min = self.height
@@ -380,7 +345,7 @@ class CiscoRecognizer:
         return filtered_list
 
     def calculate_photo_segments_invariant(self):
-        red_segments, blue_segments = self.extract_segments()
+        red_segments, blue_segments = self.extract_segments(True)
 
         self.letter_segments = []
         self.logo_segments = []
@@ -403,28 +368,20 @@ class CiscoRecognizer:
         logo_segments = []
 
         for segment in self.letter_segments:
-            print(segment.NM1)
-            print(segment.NM2)
-            print(segment.NM3)
-            print(segment.NM7)
-            ("*"*80)
             # find C
-            if 0.28 < segment.NM1 < 0.39 and 0.014 < segment.NM2 < 0.03 and 0.005 < segment.NM3 < 0.013 and 0.018 < segment.NM7 < 0.03:
-                print("found C")
+            if 0.28 < segment.NM1 < 0.39 and 0.014 < segment.NM2 < 0.03 and 0.005 < segment.NM3 < 0.014 and 0.018 < segment.NM7 < 0.03:
                 letters.append(('c',segment))
                 for point in segment.segment:
                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
 
             # find I
             elif 0.29 < segment.NM1 < 0.4 and 0.065 < segment.NM2 < 0.13 and 0.006 < segment.NM7 < 0.0073:
-                print("found I")
                 letters.append(('i', segment))
                 for point in segment.segment:
                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
 
             # find S
             elif 0.24 < segment.NM1 < 0.34 and 0.017 < segment.NM2 < 0.034 and 0.00002 < segment.NM3 < 0.00183 and 0.011 < segment.NM7 < 0.021:
-                print("found S")
                 letters.append(('s', segment))
                 for point in segment.segment:
                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
@@ -432,7 +389,6 @@ class CiscoRecognizer:
             # find 0
             elif 0.24 < segment.NM1 < 0.33 and 3.78e-06 < segment.NM2 < 0.0003 and 4.4e-08 < segment.NM3 < 6e-05 and 0.014 < segment.NM7 < 0.027:
                 letters.append(('o', segment))
-                print("found O")
                 for point in segment.segment:
                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
 
@@ -442,13 +398,8 @@ class CiscoRecognizer:
 
 
         for segment in self.logo_segments:
-            print(segment.NM1)
-            print(segment.NM2)
-            print(segment.NM3)
-            print(segment.NM7)
             # Smallest segments
             if 0.17 < segment.NM1 < 0.243 and 0.007 < segment.NM2 < 0.031 and 0 <= segment.NM3 < 0.0098 and 0.0064 < segment.NM7 < 0.009:
-                            print("Small segments")
                             logo_segments.append(('small', segment))
                             for point in segment.segment:
                                 self.blue_colors[point[0], point[1]] = [255, 2555, 255]
@@ -456,7 +407,6 @@ class CiscoRecognizer:
 
             #Medium segments
             elif 0.27 < segment.NM1 < 0.46 and 0.04 < segment.NM2 < 0.19 and 0 <= segment.NM3 < 0.008 and 0.006 < segment.NM7 < 0.01:
-                            print("Medium")
                             logo_segments.append(('medium',segment))
                             for point in segment.segment:
                                 self.blue_colors[point[0], point[1]] = [255, 2555, 255]
@@ -464,7 +414,6 @@ class CiscoRecognizer:
 
             #Large segments
             elif 0.5 < segment.NM1 < 1.28 and 0.24 < segment.NM2 < 1.6 and 1.6e-07 <= segment.NM3 < 0.0098 and 0.0063 < segment.NM7 < 0.0099:
-                            print("Long")
                             logo_segments.append(('long',segment))
                             for point in segment.segment:
                                 self.blue_colors[point[0], point[1]] = [255, 2555, 255]
