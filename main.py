@@ -1,29 +1,40 @@
 import cv2
 import numpy as np
+import math
+import configparser
+import json
+import os
 from random import randint
 from invariant_counter import InvariantCounter
-import math
 
+config = configparser.ConfigParser()
+config.read('config.ini')
 
-MAX_LINE_SIZE = 100000000
-MIN_LINE_SIZE = 190
-MAX_LETTER_SIZE = 100000000
-MIN_LETTER_SIZE = 200
-CHECK_LETTER_TRESHOLD = 50
-
-img = cv2.imread('./final/big/2.jpg')
-
+MIN_LETTER_SIZE = config.getint('Segments', 'MinLetterSegmentSize')
+MAX_LETTER_SIZE = config.getint('Segments', 'MaxLetterSegmentSize')
+MIN_LINE_SIZE = config.getint('Segments', 'MinLineSegmentSize')
+MAX_LINE_SIZE = config.getint('Segments', 'MaxLineSegmentSize')
+CHECK_LETTER_TRESHOLD = config.getint('Segments', 'LetterCheckTreshold')
 
 class CiscoRecognizer:
-    def __init__(self, photo):
-        self.hsv = cv2.cvtColor(photo, cv2.COLOR_BGR2HSV)
-        self.photo = photo
+    def __init__(self):
+        photo_filepath = config.get('Photo', 'FilePath')
+        if not os.path.isfile(photo_filepath):
+            print("Invalid file path")
+            exit(0)
+        try:
+            self.photo = cv2.imread(photo_filepath)
+        except:
+            print("Error while loading the photo")
+            exit(0)
 
-        self.min_blue = np.array([90, 60, 40])
-        self.max_blue = np.array([150, 255, 180])
+        self.hsv_photo = cv2.cvtColor(self.photo, cv2.COLOR_BGR2HSV)
 
-        self.min_red = np.array([160, 90, 90])
-        self.max_red = np.array([20, 255, 250])
+        self.min_blue = np.array(json.loads(config.get('Colors', 'MinBlueValues')))
+        self.max_blue = np.array(json.loads(config.get('Colors', 'MaxBlueValues')))
+
+        self.min_red = np.array(json.loads(config.get('Colors', 'MinRedValues')))
+        self.max_red = np.array(json.loads(config.get('Colors', 'MaxRedValues')))
         self.height, self.width, self.depth = self.photo.shape
         self.red_colors = np.zeros((self.height, self.width, 3), np.uint8)
         self.blue_colors = np.zeros((self.height, self.width, 3), np.uint8)
@@ -33,11 +44,9 @@ class CiscoRecognizer:
         self.calculate_photo_segments_invariant()
         letter_segments, logo_segments = self.find_all_letter_and_logo_segments()
         self.group_up_segments(letter_segments, logo_segments)
-        self.show_photo()
+        self.save_photos()
 
-    '''
-        Wstępne przetworzenie i progowanie
-    '''
+
     def is_red(self, point):
         return True if ((point[0] <= self.max_red[0]) or (point[0] >= self.min_red[0])) \
                     and (self.min_red[1] < point[1] <= self.max_red[1]) \
@@ -55,14 +64,17 @@ class CiscoRecognizer:
         return True if pixel[0] == color[2] and pixel[1] == color[1] and pixel[2] == color[0] else False
 
     def separate_colors(self):
+        """
+        Function separates the original photo into 2 separate photos based on the color boarded values
+        """
         for x in range(self.height):
             for y in range(self.width):
                 try:
-                    if self.is_blue(self.hsv[x, y]):
+                    if self.is_blue(self.hsv_photo[x, y]):
                         self.red_colors[x, y] = [0, 0, 0]
                         self.blue_colors[x, y] = [255, 255, 255]
 
-                    elif self.is_red(self.hsv[x, y]):
+                    elif self.is_red(self.hsv_photo[x, y]):
                         self.red_colors[x, y] = [255, 255, 255]
                         self.blue_colors[x, y] = [0, 0, 0]
 
@@ -73,11 +85,11 @@ class CiscoRecognizer:
                 except IndexError:
                     continue
 
-    '''
-    Grupowanie segmentów liter
-    '''
 
     def group_up_segments(self, letter_segments, logo_segments):
+        """
+        Function grouping the logo segments to each 's' segment
+        """
         s_segments = [(x, y) for x, y in letter_segments if x == 's']
         rest = [(x, y) for x, y in letter_segments if x != 's']
 
@@ -90,16 +102,18 @@ class CiscoRecognizer:
 
         self.assign_logo_to_grouped_letters(grouped_letter_segments, logo_segments)
 
-    '''
-    Grupowanie segmentów logo do zgrupowanych segmentów liter
-    '''
-
     def assign_logo_to_grouped_letters(self, group_letters, logo_segments):
+        """
+        Function is assignign logo segments to each letter group
+        """
         for letter_group in group_letters:
             self.assign_logo_segments_to_letter_group(letter_group, logo_segments)
 
 
     def assign_logo_segments_to_letter_group(self,letter_group, logo_segments):
+        """
+        Function deciding in which direction to look for the logo
+        """
         x_min, x_max, y_min, y_max = self.get_segment_center_boarder_points(letter_group)
         if (y_max - y_min) > (x_max - x_min):
             self.look_for_logo_up_or_down(letter_group, logo_segments)
@@ -108,6 +122,9 @@ class CiscoRecognizer:
 
 
     def look_for_logo_up_or_down(self, letter_group, logo_segments):
+        """
+        Function deciding in which direction to look for the logo
+        """
         s_letter = None
         o_letter = None
         for letter in letter_group:
@@ -122,6 +139,9 @@ class CiscoRecognizer:
             self.look_for_logo_in_direction(letter_group, logo_segments, 'd')
 
     def look_for_logo_left_or_right(self, letter_group, logo_segments):
+        """
+        Function deciding in which direction to look for the logo
+        """
         s_letter = None
         o_letter = None
         for letter in letter_group:
@@ -141,6 +161,10 @@ class CiscoRecognizer:
 
 
     def look_for_logo_in_direction(self, letter_group, logo_segments, direction):
+        """
+        Function is filtering possible segment list to the ones located in specific direction and adding the closest
+        to the groupped letter segments.
+        """
         s_letter = [(x,y)for x,y in letter_group if x == 's'][0]
         direction_segments = []
         if direction == 'u':
@@ -159,7 +183,7 @@ class CiscoRecognizer:
 
         closest_segments = []
         for segment in direction_segments:
-            distance = self.calculate_distance(s_letter, segment)
+            distance = self.calculate_distance_between_segments(s_letter, segment)
             closest_segments.append((distance, segment))
 
         sorted_by_distance = sorted(closest_segments, key=lambda x: x[0])
@@ -169,9 +193,11 @@ class CiscoRecognizer:
 
 
 
-    def mark_grouped_segments(self, grouped_letter_segments):
-        x_min, x_max, y_min, y_max = self.get_segment_boarder_points(grouped_letter_segments)
-
+    def mark_grouped_segments(self, group_of_segments):
+        """
+        Function is marking the group_of_segments on the photograph
+        """
+        x_min, x_max, y_min, y_max = self.get_segment_boarder_points(group_of_segments)
         for x in range(x_min, x_max):
             self.photo[x][y_min] = [0, 0, 255]
         for x in range(x_min, x_max):
@@ -182,6 +208,9 @@ class CiscoRecognizer:
             self.photo[x_max][y] = [0, 0, 255]
 
     def get_segment_boarder_points(self, group):
+        """
+        Function is finding the extreme values of points in given group
+        """
         x_min = self.height
         y_min = self.width
         x_max = 0
@@ -201,6 +230,9 @@ class CiscoRecognizer:
         return x_min, x_max, y_min, y_max
 
     def get_segment_center_boarder_points(self, group):
+        """
+        Function finding the extreme values of center point segments coordinates
+        """
         xes = [segment[1].center_i for segment in group]
         yes = [segment[1].center_j for segment in group]
 
@@ -213,6 +245,9 @@ class CiscoRecognizer:
 
 
     def add_nearest_segments(self, s_segment, rest_segments):
+        """
+        Function is finding the nearest letters segments to the given 's' segment
+        """
         i_segments = [(x, y) for x, y in rest_segments if x == 'i']
         c_segments = [(x, y) for x, y in rest_segments if x == 'c']
         o_segments = [(x, y) for x, y in rest_segments if x == 'o']
@@ -233,6 +268,10 @@ class CiscoRecognizer:
             return None
 
     def check_letter_segments(self, letters_to_check):
+        """
+        Function is checking the group of letter segments for substantial changes in the center point coordinate
+        differences
+        """
         xes = [y.center_i for x, y in letters_to_check]
         yes = [y.center_j for x, y in letters_to_check]
 
@@ -244,19 +283,28 @@ class CiscoRecognizer:
         return True if smaller_diff < CHECK_LETTER_TRESHOLD else False
 
     def find_nearest_segment(self, main_segment, rest):
+        """
+        Function finding the nearest segment to the main_segment out of list of given segments
+        """
         nearest_segment = rest[0]
 
         for segment in rest:
-            if self.calculate_distance(main_segment, segment) < self.calculate_distance(main_segment, nearest_segment):
+            if self.calculate_distance_between_segments(main_segment, segment) < self.calculate_distance_between_segments(main_segment, nearest_segment):
                 nearest_segment = segment
 
         return nearest_segment
 
-    def calculate_distance(self, first_point, second_point):
-        return math.sqrt(np.power([first_point[1].center_i - second_point[1].center_i,
-                                   first_point[1].center_j - second_point[1].center_j], 2).sum())
+    def calculate_distance_between_segments(self, first_segment, second_segment):
+        """
+        Function calculating distance between two segments based on their center points
+        """
+        return math.sqrt(np.power([first_segment[1].center_i - second_segment[1].center_i,
+                                   first_segment[1].center_j - second_segment[1].center_j], 2).sum())
 
     def mark_and_add_segment(self, photo, segment_list, starting_point, segment_color):
+        """
+        Flood fill algorithm for discovering information about segment based on one of its points
+        """
         target_color = [randint(0,255), randint(0,255), randint(0,255)]
         photo[starting_point[0], starting_point[1]] = target_color
 
@@ -303,6 +351,9 @@ class CiscoRecognizer:
 
 
     def extract_segments(self, sanitize = False):
+        """
+        Function is analysing all the pixels in blue and red photos, gathering information about segments
+        """
         red_segments = []
         for x in range(self.height):
             for y in range(self.width):
@@ -325,6 +376,9 @@ class CiscoRecognizer:
 
 
     def delete_red_segments(self, segment_list):
+        """
+        Function is filtering all the segments based on their size
+        """
         filtered_list = []
         for segment in segment_list:
             if len(segment) > MAX_LETTER_SIZE or len(segment) < MIN_LETTER_SIZE:
@@ -335,6 +389,9 @@ class CiscoRecognizer:
         return filtered_list
 
     def delete_blue_segments(self, segment_list):
+        """
+        Function is filtering all the segments based on their size
+        """
         filtered_list = []
         for segment in segment_list:
             if len(segment) > MAX_LINE_SIZE or len(segment) < MIN_LINE_SIZE:
@@ -345,6 +402,9 @@ class CiscoRecognizer:
         return filtered_list
 
     def calculate_photo_segments_invariant(self):
+        """
+        Function is taking all segments and counts their invariants
+        """
         red_segments, blue_segments = self.extract_segments(True)
 
         self.letter_segments = []
@@ -363,7 +423,11 @@ class CiscoRecognizer:
                 self.logo_segments.append(invariant_counter)
 
 
+
     def find_all_letter_and_logo_segments(self):
+        """
+        Function analyses red and blue segments and based on their invariants categorizes them.
+        """
         letters = []
         logo_segments = []
 
@@ -424,21 +488,16 @@ class CiscoRecognizer:
 
         return letters, logo_segments
 
-    def show_photo(self):
-        # cv2.imshow('image', self.red_colors)
-        cv2.imwrite('final/red.jpg', self.red_colors)
-        cv2.imwrite('final/blue1.jpg', self.blue_colors)
-        cv2.imwrite('final/marked.jpg', self.photo)
+    def save_photos(self):
+        """
+        Function saves the photos to the disk
+        """
 
+        destination_folder = config.get('Photo', 'DestinationFolderFilepath')
+        cv2.imwrite(destination_folder + 'red.jpg', self.red_colors)
+        cv2.imwrite(destination_folder + 'blue.jpg', self.blue_colors)
+        cv2.imwrite(destination_folder + 'marked.jpg', self.photo)
 
-        k = cv2.waitKey(0)
-        if k == 27:         # wait for ESC key to exit
-            cv2.destroyAllWindows()
-        elif k == ord('s'): # wait for 's' key to save and exit
-            cv2.imwrite('messigray.png',self.photo)
-            cv2.destroyAllWindows()
-
-
-ciscoRecognizer = CiscoRecognizer(img)
+ciscoRecognizer = CiscoRecognizer()
 ciscoRecognizer.find_logo()
 

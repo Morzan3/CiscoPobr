@@ -2,40 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6dcfebf3-c13a-480c-890a-0e1a4a6dcfd2" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/messigray.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/11.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/3d.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/5.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/55.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/bc.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/blue.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/blue1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/crop.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/red.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/smaller/1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/smaller/11.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/najnowsze/smaller/4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/template1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zaakceptowane/1.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zaakceptowane/11.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zaakceptowane/2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zaakceptowane/22.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zaakceptowane/3.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zaakceptowane/4.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zdjecia/final1.png" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zdjecia/new.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zdjecia/new2.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zdjecia/real.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zdjecia/rotated.jpg" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/zdjecia/rotated2.jpg" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/blue1.jpg" afterPath="$PROJECT_DIR$/final/blue1.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/marked.jpg" afterPath="$PROJECT_DIR$/final/marked.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/old/1.jpg" afterPath="$PROJECT_DIR$/final/old/1.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/old/2.jpg" afterPath="$PROJECT_DIR$/final/old/2.jpg" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/final/red.jpg" afterPath="$PROJECT_DIR$/final/red.jpg" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/config.ini" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/2.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/3.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/31.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/4.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/bc.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/blue1.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/marked.jpg" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/final/red.jpg" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
     </list>
@@ -48,7 +24,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/PobrProject$main.coverage" NAME="main Coverage Results" MODIFIED="1495791617256" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PobrProject$main.coverage" NAME="main Coverage Results" MODIFIED="1495796955570" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/CiscoPobr$main.coverage" NAME="main Coverage Results" MODIFIED="1495708014373" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -63,41 +39,21 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+            <state relative-caret-position="306">
+              <caret line="77" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+                <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="logo_data" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/logo_data">
+      <file leaf-file-name="config.ini" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/config.ini">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="198">
-              <caret line="11" column="4" lean-forward="false" selection-start-line="11" selection-start-column="4" selection-end-line="11" selection-end-column="4" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="invert_data" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/invert_data">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="20" column="36" lean-forward="false" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="invariant_counter.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/invariant_counter.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="25" column="21" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="21" />
+            <state relative-caret-position="252">
+              <caret line="14" column="28" lean-forward="true" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -134,6 +90,8 @@
       <find>grouped</find>
       <find>mark_grouped_segments</find>
       <find>print</find>
+      <find>mark_and_add_segment</find>
+      <find>max</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -146,6 +104,7 @@
         <option value="$PROJECT_DIR$/logo_data" />
         <option value="$PROJECT_DIR$/invariant_counter.py" />
         <option value="$PROJECT_DIR$/main.py" />
+        <option value="$PROJECT_DIR$/config.ini" />
       </list>
     </option>
   </component>
@@ -466,25 +425,45 @@
     <frame x="65" y="-4" width="1855" height="1084" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10779436" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.10779436" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42150536" sideWeight="0.38235295" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.49779457" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559499" sideWeight="0.61764705" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3559499" sideWeight="0.61764705" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.37787056" sideWeight="0.49652174" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37787056" sideWeight="0.49652174" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4390476" sideWeight="0.4973939" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.43841335" sideWeight="0.4973939" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
+    <layout-to-restore>
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42150536" sideWeight="0.38235295" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32903227" sideWeight="0.49779457" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3559499" sideWeight="0.61764705" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37787056" sideWeight="0.49652174" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10779436" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32881" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4390476" sideWeight="0.4973939" order="3" side_tool="false" content_ui="tabs" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="processedProjectFiles" value="true" />
@@ -502,13 +481,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="python-line">
-          <url>file://$PROJECT_DIR$/invariant_counter.py</url>
-          <line>28</line>
-          <option name="timeStamp" value="40" />
-        </line-breakpoint>
-      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -516,7 +488,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="42" />
+      <option name="time" value="44" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -527,7 +499,7 @@
           <caret line="130" column="60" lean-forward="false" selection-start-line="130" selection-start-column="60" selection-end-line="130" selection-end-column="60" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -546,7 +518,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -573,7 +545,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -600,7 +572,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -627,7 +599,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -654,7 +626,7 @@
           <caret line="217" column="0" lean-forward="false" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -688,7 +660,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -714,7 +686,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -726,7 +698,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -738,7 +710,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -750,7 +722,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -762,7 +734,7 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -773,7 +745,7 @@
           <caret line="11" column="28" lean-forward="false" selection-start-line="11" selection-start-column="28" selection-end-line="11" selection-end-column="28" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
           </folding>
         </state>
       </provider>
@@ -783,32 +755,12 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1408972181/cv2/__init__.py" />
     <entry file="file://$USER_HOME$/.virtualenvs/cv/lib/python3.5/random.py" />
     <entry file="file://$USER_HOME$/.virtualenvs/cv/lib/python3.5/codecs.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
           <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/invariant_counter.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="25" column="21" lean-forward="false" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="21" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-            <marker date="1495792068102" expanded="true" signature="1903:2594" ph="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -822,8 +774,75 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/invert_data">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="20" column="36" lean-forward="false" selection-start-line="20" selection-start-column="36" selection-end-line="20" selection-end-column="36" />
+        <state relative-caret-position="180">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/invariant_counter.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11" column="21" lean-forward="true" selection-start-line="11" selection-start-column="21" selection-end-line="11" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1408972181/cv2/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="2537" column="4" lean-forward="false" selection-start-line="2537" selection-start-column="4" selection-end-line="2537" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/.PyCharm2016.3/system/python_stubs/-1408972181/builtins.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="417">
+          <caret line="298" column="46" lean-forward="false" selection-start-line="298" selection-start-column="46" selection-end-line="298" selection-end-column="46" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.5/json/decoder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="341" column="0" lean-forward="false" selection-start-line="341" selection-start-column="0" selection-end-line="341" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.5/json/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="318" column="0" lean-forward="false" selection-start-line="318" selection-start-column="0" selection-end-line="318" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.5/configparser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="815" column="0" lean-forward="false" selection-start-line="815" selection-start-column="0" selection-end-line="815" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="77" column="0" lean-forward="false" selection-start-line="77" selection-start-column="0" selection-end-line="77" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1495796401514" expanded="true" signature="2558:3388" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="14" column="28" lean-forward="true" selection-start-line="14" selection-start-column="28" selection-end-line="14" selection-end-column="28" />
           <folding />
         </state>
       </provider>
