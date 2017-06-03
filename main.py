@@ -28,8 +28,6 @@ class CiscoRecognizer:
             print("Error while loading the photo")
             exit(0)
 
-        self.hsv_photo = cv2.cvtColor(self.photo, cv2.COLOR_BGR2HSV)
-
         self.min_blue = np.array(json.loads(config.get('Colors', 'MinBlueValues')))
         self.max_blue = np.array(json.loads(config.get('Colors', 'MaxBlueValues')))
 
@@ -39,12 +37,54 @@ class CiscoRecognizer:
         self.red_colors = np.zeros((self.height, self.width, 3), np.uint8)
         self.blue_colors = np.zeros((self.height, self.width, 3), np.uint8)
 
+
+
     def find_logo(self):
+        self.convert_to_hsv()
         self.separate_colors()
         self.calculate_photo_segments_invariant()
         letter_segments, logo_segments = self.find_all_letter_and_logo_segments()
         self.group_up_segments(letter_segments, logo_segments)
         self.save_photos()
+
+    def convert_to_hsv(self):
+        # self.hsv_photo = cv2.cvtColor(self.photo, cv2.COLOR_BGR2HSV)
+
+        self.hsv_photo = np.zeros((self.height, self.width, 3), np.uint8)
+        for x in range(self.height):
+            for y in range(self.width):
+                h, s, v = self.bgrToHsc(self.photo[x][y])
+                self.hsv_photo[x,y][0] = h
+                self.hsv_photo[x,y][1] = s
+                self.hsv_photo[x,y][2] = v
+
+    def bgrToHsc(self, point):
+        b = point[0]
+        g = point[1]
+        r = point[2]
+        max_color_value = max(point)
+        min_color_value = min(point)
+        v = max_color_value
+        if min_color_value == max_color_value:
+            return 0.0, 0.0, v
+        s = (max_color_value - min_color_value) / max_color_value
+        max_min = max_color_value - min_color_value
+        rc = (max_color_value - r) / max_min
+        gc = (max_color_value - g) / max_min
+        bc = (max_color_value - b) / max_min
+        if b == max_color_value:
+            h = 4.0 + gc - rc
+        elif g == max_color_value:
+            h = 2.0 + rc - bc
+        else:
+            h = bc - gc
+
+        h = (h / 6.0) % 1.0
+
+        h = int(h*180)
+        s = int(s*255)
+        v = int(v)
+        return (h, s, v)
 
 
     def is_red(self, point):
@@ -451,7 +491,7 @@ class CiscoRecognizer:
                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
 
             # find 0
-            elif 0.24 < segment.NM1 < 0.33 and 3.78e-06 < segment.NM2 < 0.0003 and 4.4e-08 < segment.NM3 < 6e-05 and 0.014 < segment.NM7 < 0.027:
+            elif 0.24 < segment.NM1 < 0.33 and 3.38e-06 < segment.NM2 < 0.0003 and 4.4e-08 < segment.NM3 < 6e-05 and 0.014 < segment.NM7 < 0.027:
                 letters.append(('o', segment))
                 for point in segment.segment:
                     self.red_colors[point[0], point[1]] = [255, 2555, 255]
@@ -477,7 +517,7 @@ class CiscoRecognizer:
 
 
             #Large segments
-            elif 0.5 < segment.NM1 < 1.28 and 0.24 < segment.NM2 < 1.6 and 1.6e-07 <= segment.NM3 < 0.0098 and 0.0063 < segment.NM7 < 0.0099:
+            elif 0.5 < segment.NM1 < 1.28 and 0.24 < segment.NM2 < 1.6 and 1.6e-08 <= segment.NM3 < 0.0098 and 0.0063 < segment.NM7 < 0.0099:
                             logo_segments.append(('long',segment))
                             for point in segment.segment:
                                 self.blue_colors[point[0], point[1]] = [255, 2555, 255]
